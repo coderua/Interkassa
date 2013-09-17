@@ -157,7 +157,7 @@ class interkassaNotification
      * @param null|array $fields
      */
     public function __construct($fields = NULL)
-	{
+    {
         // Default values for all type of messages (status|success|fail)
         $this->ik_shop_id           = '64C18529-4B94-0B5D-7405-F2752F2B716C';
         $this->ik_payment_state     = 'success';
@@ -175,7 +175,7 @@ class interkassaNotification
             }
             $this->init($fields);
         }
-	}
+    }
 
     /**
      * Метод инициализации объекта (заполнение полей)
@@ -194,16 +194,16 @@ class interkassaNotification
         }
         return $this;
     }
-	
-	/**
+
+    /**
      * Generating sign hash
      * (Генерация контрольной подпись оповещения о выполнении платежа)
      * @access private
      * @param string $notification_secret
      * @return string
      */
-	private function hash($notification_secret)
-	{
+    private function hash($notification_secret)
+    {
         $sing_hash_str = $this->ik_shop_id
             .':'. $this->ik_payment_amount
             .':'. $this->ik_payment_id
@@ -215,8 +215,8 @@ class interkassaNotification
             .':'. $this->ik_fees_payer
             .':'. $notification_secret;
 
-		return strtoupper(md5($sing_hash_str));
-	}
+    	return strtoupper(md5($sing_hash_str));
+    }
 
     /**
      * Send status form (Отправка формы оповещения о платеже)
@@ -268,7 +268,7 @@ class interkassaNotification
      * Sending fail payment form (Отправка формы невыполненного платежа)
      * @param string $url
      */
-	public function fail($url)
+    public function fail($url)
     {
         $this->ik_payment_state = 'fail';
         $fields = array(
@@ -283,15 +283,15 @@ class interkassaNotification
         $this->send($url, $fields);
     }
 
-	/**
-	 * Signs and sends a notification, outputs all response headers and actual response
+    /**
+     * Signs and sends a notification, outputs all response headers and actual response
      * @access private
-	 * @param string $url
+     * @param string $url
      * @param array $fields
-	 */
-	private function send($url, array $fields)
-	{
-		$ch = curl_init();
+     */
+    private function send($url, array $fields)
+    {
+        $ch = curl_init();
         $data = array();
         if ( !empty($fields) ) {
             foreach ($fields as $var) {
@@ -299,7 +299,7 @@ class interkassaNotification
             }
         }
 
-		curl_setopt_array(
+    	curl_setopt_array(
             $ch,
             array(
                 CURLOPT_URL            => $url,
@@ -312,14 +312,14 @@ class interkassaNotification
                 CURLOPT_CONNECTTIMEOUT => 60,
                 CURLOPT_FAILONERROR    => false,
                 CURLOPT_HEADER         => true,
-		    )
+            )
         );
-		
-		echo curl_exec($ch);
+    
+        echo curl_exec($ch);
 
-		if ( curl_error($ch) ) {
-			var_dump(curl_error($ch), curl_errno($ch));	
-		}
-		curl_close($ch);
-	}
+        if ( curl_error($ch) ) {
+            var_dump(curl_error($ch), curl_errno($ch));	
+        }
+        curl_close($ch);
+    }
 }
