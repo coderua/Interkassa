@@ -161,7 +161,7 @@ class interkassaNotification
      */
     public function __construct($fields = NULL)
     {
-        // Default values for all type of messages (status|success|fail)
+        // Default values for all types of messages (status|success|fail)
         $this->ik_shop_id           = '64C18529-4B94-0B5D-7405-F2752F2B716C';
         $this->ik_payment_state     = 'success';
         $this->ik_payment_id        = rand(1, 2147483647);
@@ -170,7 +170,7 @@ class interkassaNotification
 
         if ( !empty($fields) && is_array($fields) ) {
             if ( array_key_exists('ik_payment_amount', $fields) ) {
-                // It's a status fields, setting default random values
+                // It's a «status» fields, setting default random values
                 $this->ik_payment_amount    = rand(1, 1000) + rand(1, 99) / 100;
                 $this->ik_currency_exch     = 0.029411;
                 $this->ik_fees_payer        = 0;
@@ -181,6 +181,7 @@ class interkassaNotification
     }
 
     /**
+     * Object initialization
      * Метод инициализации объекта (заполнение полей)
      * @access protected
      * @param array $fields
