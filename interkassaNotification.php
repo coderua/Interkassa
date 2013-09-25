@@ -8,7 +8,10 @@
  * Usage:
  *
  * include 'interkassaNotification.php';
- * $domain = 'example.com';
+ * $domain     = 'example.com';      // Your site domain
+ * $protocol   = 'https';            // Protocol: http|https
+ * $secret_key = 'lY6iGS6OzRzW8GYt'; // Shop secret key
+ * 
  * //
  * // 1. Send payments STATUS message
  * //
@@ -28,9 +31,9 @@
  * $notification->ik_trans_id          = 'IK_15363502';          // «Interkassa» payment id
  * $notification->ik_currency_exch     = 0.029411;               // Exchange rate for dollar
  * $notification->ik_fees_payer        = 0;                      // Fees on payer
- * $notification->status('https://'. $domain .'/payments/interkassa/status', 'lY6iGS6OzRzW8GYt');
+ * $notification->status($protocol .'://'. $domain .'/payments/interkassa/status', 'lY6iGS6OzRzW8GYt');
  *
- * // 1.2. Properties initialisation by constructor
+ * // 1.2. Properties initialization by constructor
  * $notification = new interkassaNotification(
  *     array(
  *      'ik_shop_id'           => '64C18529-4B94-0B5D-7405-F2752F2B716C', // Shop ID
@@ -46,7 +49,7 @@
  *      'ik_fees_payer'        => 0                       // Fees on payer
  *     )
  * );
- * $notification->status('https://'. $domain .'/payments/interkassa/status', 'lY6iGS6OzRzW8GYt');
+ * $notification->status($protocol .'://'. $domain .'/payments/interkassa/status', $secret_key);
  *
  * //
  * // 2. Send payments SUCCESS/FAIL message
@@ -58,10 +61,10 @@
  * $notification->ik_payment_timestamp = 1379346671;             // Date and time of payment
  * $notification->ik_trans_id          = 'IK_15363502';          // «Interkassa» payment id
  * // 2.1. Send success message
- * $notification->success('https://'. $domain .'/payments/interkassa/success');
+ * $notification->success($protocol .'://'. $domain .'/payments/interkassa/success');
  *
  * // 2.2. or Send fail message
- * $notification->fail('https://'. $domain .'/payments/interkassa/fail');
+ * $notification->fail($protocol .'://'. $domain .'/payments/interkassa/fail');
  */
 
 class interkassaNotification
@@ -167,7 +170,7 @@ class interkassaNotification
 
         if ( !empty($fields) && is_array($fields) ) {
             if ( array_key_exists('ik_payment_amount', $fields) ) {
-                // It's a status fields setting default random values
+                // It's a status fields, setting default random values
                 $this->ik_payment_amount    = rand(1, 1000) + rand(1, 99) / 100;
                 $this->ik_currency_exch     = 0.029411;
                 $this->ik_fees_payer        = 0;
